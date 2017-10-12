@@ -1,0 +1,13 @@
+{
+  "name": "1-indecisionApp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/brendanmorrell/ReactCourse-IndecisionApp.git",
+  "author": "Brendan Morrell <brendanmorrell@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1"
+  }
+}
