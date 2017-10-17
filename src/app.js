@@ -10,16 +10,14 @@ class IndecisionApp extends React.Component{
     this.handleAddOption = this.handleAddOption.bind(this);
 
     this.state = {
-      options:props.options,
+      options: [],
       removeErrorIfError: false
     }
   }
-
   handlePick() {
     const randomNum = Math.floor((Math.random()*this.state.options.length))
     alert(this.state.options[randomNum])
   }
-
   handleDeleteOptions() {
     this.setState(() => {
       return {
@@ -28,8 +26,6 @@ class IndecisionApp extends React.Component{
       }
     });
   }
-
-
   handleDeleteOption(optionToRemove) {
     this.setState((prevState) => {
       return {
@@ -38,7 +34,6 @@ class IndecisionApp extends React.Component{
       }
     });
   };
-
   handleAddOption(option) {
     const upperCaseOption = option.toUpperCase();
     const upperCaseOptions = this.state.options.map((option) => option.toUpperCase());
@@ -56,8 +51,28 @@ class IndecisionApp extends React.Component{
                                     //both .concat and ES6 spread (...) both work. Wanted to show both ways
     this.setState((prevState) => ({options: [...prevState.options, option]} || {options: prevState.options.concat([option])}));
   }
+  //predefined 'lifecycle methods' (constructor is one too). not available on stateless components check documentation on goolge to see all of them and the order they fire in
+  componentDidMount() {
+    const json = localStorage.getItem('options')
+    const options = JSON.parse(json)
 
-
+    if(json && options.length > 0) {
+      console.log('options on initial mount: ', options);
+      this.setState(() => ({options}));
+    } else {
+      console.log('Options array not found in localStorage on initial mount')
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.options !== this.state.options) {
+      const json = JSON.stringify(this.state.options);
+      localStorage.setItem('options', json)
+    console.log('saving data')
+    }
+  }
+  componentWillUnmount() {
+    console.log('componentWillUnmount')
+  }
   render() {
     const subtitle = 'Put your life in the hands of a computer';
 
@@ -83,7 +98,7 @@ class IndecisionApp extends React.Component{
   }
 }
 IndecisionApp.defaultProps = {
-  options: []
+
 };
 
 class AddOption extends React.Component {
@@ -150,6 +165,7 @@ const Options = (props) => {
   return (
     <div>
       <button disabled={!props.hasOptions} onClick={props.handleDeleteOptions}>Remove All</button>
+      {!props.hasOptions && <h4>Please add an option to get started</h4>}
       {
       props.options.map((option) => (
         <Option

@@ -27,7 +27,7 @@ var IndecisionApp = function (_React$Component) {
     _this.handleAddOption = _this.handleAddOption.bind(_this);
 
     _this.state = {
-      options: props.options,
+      options: [],
       removeErrorIfError: false
     };
     return _this;
@@ -90,6 +90,37 @@ var IndecisionApp = function (_React$Component) {
         return { options: [].concat(_toConsumableArray(prevState.options), [option]) } || { options: prevState.options.concat([option]) };
       });
     }
+    //predefined 'lifecycle methods' (constructor is one too). not available on stateless components check documentation on goolge to see all of them and the order they fire in
+
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var json = localStorage.getItem('options');
+      var options = JSON.parse(json);
+
+      if (json && options.length > 0) {
+        console.log('options on initial mount: ', options);
+        this.setState(function () {
+          return { options: options };
+        });
+      } else {
+        console.log('Options array not found in localStorage on initial mount');
+      }
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (prevState.options !== this.state.options) {
+        var json = JSON.stringify(this.state.options);
+        localStorage.setItem('options', json);
+        console.log('saving data');
+      }
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      console.log('componentWillUnmount');
+    }
   }, {
     key: 'render',
     value: function render() {
@@ -120,9 +151,7 @@ var IndecisionApp = function (_React$Component) {
   return IndecisionApp;
 }(React.Component);
 
-IndecisionApp.defaultProps = {
-  options: []
-};
+IndecisionApp.defaultProps = {};
 
 var AddOption = function (_React$Component2) {
   _inherits(AddOption, _React$Component2);
@@ -225,6 +254,11 @@ var Options = function Options(props) {
       'button',
       { disabled: !props.hasOptions, onClick: props.handleDeleteOptions },
       'Remove All'
+    ),
+    !props.hasOptions && React.createElement(
+      'h4',
+      null,
+      'Please add an option to get started'
     ),
     props.options.map(function (option) {
       return React.createElement(Option, {
