@@ -2,11 +2,16 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+//when you hit remove all, make it remove the 'this item already exists' type messages
+
 
 var IndecisionApp = function (_React$Component) {
   _inherits(IndecisionApp, _React$Component);
@@ -17,11 +22,13 @@ var IndecisionApp = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (IndecisionApp.__proto__ || Object.getPrototypeOf(IndecisionApp)).call(this, props));
 
     _this.handleDeleteOptions = _this.handleDeleteOptions.bind(_this);
+    _this.handleDeleteOption = _this.handleDeleteOption.bind(_this);
     _this.handlePick = _this.handlePick.bind(_this);
     _this.handleAddOption = _this.handleAddOption.bind(_this);
 
     _this.state = {
-      options: []
+      options: props.options,
+      removeErrorIfError: false
     };
     return _this;
   }
@@ -30,53 +37,68 @@ var IndecisionApp = function (_React$Component) {
     key: 'handlePick',
     value: function handlePick() {
       var randomNum = Math.floor(Math.random() * this.state.options.length);
-      console.log(this.state.options[randomNum]);
+      alert(this.state.options[randomNum]);
     }
   }, {
     key: 'handleDeleteOptions',
     value: function handleDeleteOptions() {
       this.setState(function () {
         return {
-          options: []
+          options: [],
+          removeErrorIfError: true
+        };
+      });
+    }
+  }, {
+    key: 'handleDeleteOption',
+    value: function handleDeleteOption(optionToRemove) {
+      this.setState(function (prevState) {
+        return {
+          options: prevState.options.filter(function (option) {
+            return option !== optionToRemove;
+          }),
+          removeErrorIfError: true
         };
       });
     }
   }, {
     key: 'handleAddOption',
     value: function handleAddOption(option) {
-
       var upperCaseOption = option.toUpperCase();
       var upperCaseOptions = this.state.options.map(function (option) {
         return option.toUpperCase();
       });
 
       if (!option) {
+        this.setState(function () {
+          return { removeErrorIfError: false };
+        });
         return 'Enter valid value to add item:';
       } else if (this.state.options.indexOf(option) > -1) {
+        this.setState(function () {
+          return { removeErrorIfError: false };
+        });
         return 'This option already exists:';
       } else if (upperCaseOptions.indexOf(upperCaseOption) > -1) {
+        this.setState(function () {
+          return { removeErrorIfError: false };
+        });
         return 'Options are not case-sensitive. Please create a unique option:';
       }
-
+      //both .concat and ES6 spread (...) both work. Wanted to show both ways
       this.setState(function (prevState) {
-        return {
-          options: prevState.options.concat([option])
-          //es6 spread is another way he could have done
-          //        options: [...prevState.options, option]
-
-        };
+        return { options: [].concat(_toConsumableArray(prevState.options), [option]) } || { options: prevState.options.concat([option]) };
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var title = 'Indecision App';
       var subtitle = 'Put your life in the hands of a computer';
 
       return React.createElement(
         'div',
         null,
-        React.createElement(Header, { title: title, subtitle: subtitle }),
+        React.createElement(Header, { subtitle: subtitle }),
         React.createElement(Action, {
           hasOptions: this.state.options.length > 0,
           handlePick: this.handlePick
@@ -84,10 +106,12 @@ var IndecisionApp = function (_React$Component) {
         React.createElement(Options, {
           hasOptions: this.state.options.length > 0,
           options: this.state.options,
-          handleDeleteOptions: this.handleDeleteOptions
+          handleDeleteOptions: this.handleDeleteOptions,
+          handleDeleteOption: this.handleDeleteOption
         }),
         React.createElement(AddOption, {
-          handleAddOption: this.handleAddOption
+          handleAddOption: this.handleAddOption,
+          removeErrorIfError: this.state.removeErrorIfError
         })
       );
     }
@@ -95,6 +119,10 @@ var IndecisionApp = function (_React$Component) {
 
   return IndecisionApp;
 }(React.Component);
+
+IndecisionApp.defaultProps = {
+  options: []
+};
 
 var AddOption = function (_React$Component2) {
   _inherits(AddOption, _React$Component2);
@@ -119,6 +147,9 @@ var AddOption = function (_React$Component2) {
       var option = e.target.elements.option.value.trim();
       var error = this.props.handleAddOption(option);
 
+      if (!error) {
+        e.target.elements.option.value = '';
+      }
       this.setState(function () {
         return { error: error };
       });
@@ -129,7 +160,7 @@ var AddOption = function (_React$Component2) {
       return React.createElement(
         'div',
         null,
-        this.state.error && React.createElement(
+        this.state.error && !this.props.removeErrorIfError && React.createElement(
           'p',
           null,
           this.state.error
@@ -160,12 +191,15 @@ var Header = function Header(props) {
       null,
       props.title
     ),
-    React.createElement(
+    props.subtitle && React.createElement(
       'h2',
       null,
       props.subtitle
     )
   );
+};
+Header.defaultProps = {
+  title: 'Indecision App'
 };
 
 var Action = function Action(props) {
@@ -193,7 +227,11 @@ var Options = function Options(props) {
       'Remove All'
     ),
     props.options.map(function (option) {
-      return React.createElement(Option, { key: option, optionText: option });
+      return React.createElement(Option, {
+        key: option,
+        optionText: option,
+        handleDeleteOption: props.handleDeleteOption
+      });
     })
   );
 };
@@ -206,7 +244,16 @@ var Option = function Option(props) {
       'p',
       null,
       'Option: ',
-      props.optionText
+      props.optionText + ' ',
+      React.createElement(
+        'button',
+        {
+          onClick: function onClick() {
+            props.handleDeleteOption(props.optionText);
+          }
+        },
+        'Remove'
+      )
     )
   );
 };
