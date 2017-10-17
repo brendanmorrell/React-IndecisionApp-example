@@ -10,7 +10,7 @@ const Filter = () => {
           return gobbledygook+'5';
         })}<br />
         {array.filter((whatever) => {
-          return whatever!=='a';
+          return whatever!=='a';git status
         })}
       </h1>
     </div>
