@@ -9,7 +9,7 @@ const Header = (props) => {
   );
 }
 Header.defaultProps = {
-  title: 'Indecision App'
+  title: 'Indecisiosdfsdfsdfsdn App'
 }
 
 export default Header;
