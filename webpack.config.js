@@ -14,9 +14,6 @@ module.exports = {
   module: {
     rules: [{
       loader: 'babel-loader',
-      query: {
-        presets: ["env", "react"]
-      },
       test: /\.js$/,
       exclude: /node_modules/,
     }]

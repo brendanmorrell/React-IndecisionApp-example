@@ -6,31 +6,23 @@ import Options from './Options';
 import AddOption from './AddOption';
 
 export default class IndecisionApp extends React.Component{
-  constructor (props) {
-    super(props);
-    this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
-    this.handleDeleteOption = this.handleDeleteOption.bind(this);
-    this.handlePick = this.handlePick.bind(this);
-    this.handleAddOption = this.handleAddOption.bind(this);
-
-    this.state = {
-      options: [],
-      removeErrorIfError: false
-    }
+  state = {
+    options: [],
+    removeErrorIfError: false
   }
-  handlePick() {
+  handlePick = () => {
     const randomNum = Math.floor((Math.random()*this.state.options.length))
     alert(this.state.options[randomNum])
-  }
-  handleDeleteOptions() {
+  };
+  handleDeleteOptions = () => {
     this.setState(() => {
       return {
         options: [],
         removeErrorIfError: true
       }
     });
-  }
-  handleDeleteOption(optionToRemove) {
+  };
+  handleDeleteOption = (optionToRemove) => {
     this.setState((prevState) => {
       return {
         options:prevState.options.filter((option) => option !== optionToRemove),
@@ -38,7 +30,7 @@ export default class IndecisionApp extends React.Component{
       }
     });
   };
-  handleAddOption(option) {
+  handleAddOption = (option) => {
     const upperCaseOption = option.toUpperCase();
     const upperCaseOptions = this.state.options.map((option) => option.toUpperCase());
 
@@ -54,7 +46,7 @@ export default class IndecisionApp extends React.Component{
     }
                                     //both .concat and ES6 spread (...) both work. Wanted to show both ways
     this.setState((prevState) => ({options: [...prevState.options, option]} || {options: prevState.options.concat([option])}));
-  }
+  };
   //predefined 'lifecycle methods' (constructor is one too). not available on stateless components check documentation on goolge to see all of them and the order they fire in
   componentDidMount() {
     const json = localStorage.getItem('options')
