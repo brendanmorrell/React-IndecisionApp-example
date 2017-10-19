@@ -1,4 +1,3 @@
-$brand-color: green;
-* {
-  color: $brand-color;
-}
+@import './base/base';
+// leave off extension and underscore when importing partial
+@import './components/header';
