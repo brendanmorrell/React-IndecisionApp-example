@@ -1,6 +1,7 @@
 import React from 'react';
 
 
+
 export default class AddOption extends React.Component {
   state = {
     error: undefined
@@ -10,7 +11,7 @@ export default class AddOption extends React.Component {
 
     const option = e.target.elements.option.value.trim();
     const error = this.props.handleAddOption(option)
- 
+
     if(!error){
       e.target.elements.option.value=''
     }
