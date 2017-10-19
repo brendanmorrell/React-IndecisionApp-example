@@ -1,0 +1,28 @@
+.big-button {
+  background: $purple;
+  border: none;
+  border-bottom: .6rem solid $dark-purple;
+  color: white;
+  font-weight: bold;
+  font-size: $l-size;
+  margin-bottom: $xl-size;
+  padding:2.4rem;
+  width: 100%;
+}
+
+.button {
+  background-color: $purple;
+  border: none;
+  border-bottom: .3rem solid $dark-purple;
+  color: white;
+  font-weight: $m-weight;
+  padding: $s-size;
+}
+
+//BEM: for modifiers, you use -- instead of __
+.button--link {
+  background: none;
+  border: none;
+  color: $off-white;
+  padding: 0;
+}

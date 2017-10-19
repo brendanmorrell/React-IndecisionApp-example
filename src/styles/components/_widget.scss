@@ -1,0 +1,29 @@
+//widget
+.widget {
+  background: $light-blue;
+  border-radius: $m-border-radius;
+  margin-bottom: $xl-size;
+}
+
+//Widget Header
+.widget-header {
+  background: $blue;
+  border-top-right-radius: $m-border-radius;
+  border-top-left-radius: $m-border-radius;
+  color: $off-white;
+  display: flex;//this flexbox property  helps auto space things, and the justify-content setting below justifies it and tells it how exactly to space them
+  justify-content: space-between;//space-between=push them apart, space-around=even distribution,
+  padding: $m-size;
+}
+.widget-header__title {
+  margin: 0;
+}
+
+//Widget Message
+.widget__message {
+  border-bottom: 1px solid $lighter-blue;
+  color: $off-white;
+  margin: 0;
+  padding: $l-size;
+  text-align: center;
+}
