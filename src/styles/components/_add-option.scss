@@ -21,3 +21,17 @@
   margin-right: $s-size;
   padding: $s-size;
 }
+
+//@media (max-width: 45rem) {
+
+//this means apply these styles up until 45 rem, so until the max-width exceeds 45rem, at which point we switch to normal
+//also worth noting that this applies this to everything, not just things related to this _add-option.scss file
+//we just put it here because right now the change will be related to _add-option
+@media (max-width: $mobile-breakpoint) {
+  .add-option {
+    flex-direction: column;
+  }
+  .add-option__input {
+    margin: 0 0 $s-size;
+  }
+}

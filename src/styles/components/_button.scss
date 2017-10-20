@@ -28,3 +28,10 @@
   white-space: nowrap;
   padding-left: $s-size;
 }
+
+@media (max-width: $mobile-breakpoint) {
+  .big-button {
+    margin-bottom: $m-size;
+    padding: $s-size;
+  }
+}

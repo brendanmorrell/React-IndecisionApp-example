@@ -42,3 +42,9 @@
   margin: 0 0 $l-size;
   word-break: break-all;
 }
+
+@media (max-width: $mobile-breakpoint){
+  .modal {
+    margin:0 5%;
+  }
+}
