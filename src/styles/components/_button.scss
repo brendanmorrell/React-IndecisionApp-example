@@ -6,7 +6,7 @@
   font-weight: bold;
   font-size: $l-size;
   margin-bottom: $xl-size;
-  padding:2.4rem;
+  padding:$s-size*2;
   width: 100%;
 }
 
@@ -25,4 +25,6 @@
   border: none;
   color: $off-white;
   padding: 0;
+  white-space: nowrap;
+  padding-left: $s-size;
 }
