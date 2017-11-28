@@ -1,8 +1,8 @@
-//when you hit remove all, make it remove the 'this item already exists' type messages
+// when you hit remove all, make it remove the 'this item already exists' type messages
 
 
 class IndecisionApp extends React.Component{
-  constructor (props) {
+  constructor (props)  {
     super(props);
     this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
     this.handleDeleteOption = this.handleDeleteOption.bind(this);

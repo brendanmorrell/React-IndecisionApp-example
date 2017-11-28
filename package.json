@@ -7,7 +7,6 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "yarn run dev-server",
     "build": "webpack",
     "dev-server": "webpack-dev-server"
   },
