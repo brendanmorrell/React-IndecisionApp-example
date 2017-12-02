@@ -2,10 +2,11 @@
 //__dirname gives the absolute path to the file
 //path is a node module that helps take a bunch of data and concatenate it into actual cross-platform/os compatible file paths while also eliminating redundancies (like if you concatenated '../' whatever the previous path piece was would automatically be removed)
 const path = require('path');
+const webpack = require('webpack');
 
 
-
-module.exports = {
+module.exports = (env) => {
+const isProduction = env === 'production';
   entry: './src/app.js',
   output: {
     path: path.join(__dirname, 'public'),
